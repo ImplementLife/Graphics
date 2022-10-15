@@ -1,14 +1,16 @@
 package com.impllife.my.mouse;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 
-public final class MouseFabric {
+@Component
+public class MouseFabric {
     private static MouseFabric instance;
     public static MouseFabric getInstance() {
         if (instance == null) instance = new MouseFabric();
         return instance;
     }
-    private MouseFabric() {}
 
     private final HashMap<Long, Mouse> mousses = new HashMap<>();
 

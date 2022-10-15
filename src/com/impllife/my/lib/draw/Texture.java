@@ -16,19 +16,16 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 public class Texture implements Disposable {
-
     private int texId;
-
     Texture() {}
 
     void load(String filename) {
         try {
-            URI file = getClass().getResource("/textures/" + filename).toURI();
-            BufferedImage bufferedImage = ImageIO.read(new File(file));
+            BufferedImage bufferedImage = ImageIO.read(new File(filename));
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
             int[] pixels_raw = bufferedImage.getRGB(0, 0, width, height, null, 0, width);
-            ByteBuffer pixels = BufferUtils.createByteBuffer(pixels_raw.length);
+            ByteBuffer pixels = BufferUtils.createByteBuffer(pixels_raw.length * 4);
             for (int pixel : pixels_raw) {
                 pixels.put((byte) ((pixel >> 16) & 0xFF)); // RED
                 pixels.put((byte) ((pixel >> 8) & 0xFF));  // GREEN
@@ -43,16 +40,16 @@ public class Texture implements Disposable {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void bind(int sampler) {
-        if (sampler >= 0 && sampler <= 31) {
-            glActiveTexture(GL_TEXTURE0 + sampler);
+    public void bind(/*int sampler*/) {
+//        if (sampler >= 0 && sampler <= 31) {
+//            glActiveTexture(GL_TEXTURE0 + sampler);
             glBindTexture(GL_TEXTURE_2D, texId);
-        }
+//        }
     }
 
     @Override

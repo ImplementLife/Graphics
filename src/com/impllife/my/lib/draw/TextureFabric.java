@@ -1,18 +1,17 @@
 package com.impllife.my.lib.draw;
 
 import com.impllife.my.lib.disposed.DisposeManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TextureFabric {
+    @Autowired
     private DisposeManager disposeManager;
-
-    public TextureFabric(DisposeManager disposeManager) {
-        this.disposeManager = disposeManager;
-    }
 
     public Texture get(String name) {
         Texture texture = new Texture();
         texture.load(name);
-        if (disposeManager != null) disposeManager.put(texture);
         return texture;
     }
 }
