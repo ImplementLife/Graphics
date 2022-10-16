@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -25,40 +26,43 @@ public class ControlService {
 
     private final LinkedList<Action> actions = new LinkedList<>();
     private final HashMap<Integer, Key> keys = new HashMap<>();
-    public ControlService() {
-        addKey(new Key(GLFW_KEY_W, "W"));
-        addKey(new Key(GLFW_KEY_A, "A"));
-        addKey(new Key(GLFW_KEY_S, "S"));
-        addKey(new Key(GLFW_KEY_D, "D"));
-        addKey(new Key(GLFW_KEY_LEFT_CONTROL, "Ctrl"));
-        addKey(new Key(GLFW_KEY_UP, "up"));
-        addKey(new Key(GLFW_KEY_DOWN, "DOWN"));
-        addKey(new Key(GLFW_KEY_LEFT, "LEFT"));
-        addKey(new Key(GLFW_KEY_RIGHT, "RIGHT"));
 
-        addAction(new Action(new int[][]{
+    @PostConstruct
+    private void init() {
+        registerAction(new Action(new int[][]{
             {GLFW_KEY_UP, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_W},
         }, () -> camera.getPos().y += 0.05f, "move up", true, false, keys));
-        addAction(new Action(new int[][]{
+        registerAction(new Action(new int[][]{
             {GLFW_KEY_DOWN, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_S},
         }, () -> camera.getPos().y -= 0.05f, "move down", true, false, keys));
-        addAction(new Action(new int[][]{
+        registerAction(new Action(new int[][]{
             {GLFW_KEY_LEFT, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_A},
         }, () -> camera.getPos().x -= 0.05f, "move left", true, false, keys));
-        addAction(new Action(new int[][]{
+        registerAction(new Action(new int[][]{
             {GLFW_KEY_RIGHT, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_D},
         }, () -> camera.getPos().x += 0.05f, "move right", true, false, keys));
+        registerUsedKeys();
     }
-
-    private void addAction(Action action) {
+    private void registerUsedKeys() {
+        for (Action action : actions) {
+            for (int[] orCases : action.getKeysId()) {
+                for (int andKeys : orCases) {
+                    registerKey(andKeys);
+                }
+            }
+        }
+    }
+    private void registerAction(Action action) {
         actions.add(action);
     }
-
-    private void addKey(Key key) {
+    private void registerKey(int keyId) {
+        int scancode = glfwGetKeyScancode(keyId);
+        String name = glfwGetKeyName(keyId, scancode);
+        Key key = new Key(keyId, name);
         keys.put(key.getId(), key);
     }
 

@@ -19,6 +19,10 @@ public class Action {
         this.keys = keys;
     }
 
+    int[][] getKeysId() {
+        return keysId;
+    }
+
     public void execute() {
         boolean conditionsCompleted;
         for (int[] or : keysId) {
