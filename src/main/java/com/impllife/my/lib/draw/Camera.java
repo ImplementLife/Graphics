@@ -16,6 +16,8 @@ public class Camera {
 
     @Value("${implement-life.camera.init-scale}")
     private float scale;
+    @Value("${implement-life.camera.default-speed}")
+    private float defaultSpeed;
     private final Vector3f position = new Vector3f();
     private Matrix4f baseProjection;
     private Matrix4f projection;
@@ -30,17 +32,20 @@ public class Camera {
         projection = new Matrix4f(baseProjection);
     }
 
-    private void setScale(float scale) {
+    public void setScale(float scale) {
         this.scale = scale;
         projection = new Matrix4f(baseProjection).scale(scale);
     }
-    private void addScale(float scale) {
+    public void addScale(float scale) {
         setScale(this.scale + scale);
     }
 
     public Matrix4f proj() {
         Matrix4f pos = new Matrix4f().setTranslation(position);
         return projection.mul(pos, new Matrix4f());
+    }
+    public Matrix4f proj(Matrix4f pos) {
+        return proj().mul(pos);
     }
 
     public void setPos(Vector3f pos) {
@@ -60,4 +65,7 @@ public class Camera {
         return projection;
     }
 
+    public float getSpeed() {
+        return defaultSpeed;
+    }
 }

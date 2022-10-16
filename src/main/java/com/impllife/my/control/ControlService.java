@@ -32,19 +32,26 @@ public class ControlService {
         registerAction(new Action(new int[][]{
             {GLFW_KEY_UP, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_W},
-        }, () -> camera.getPos().y += 0.05f, "move up", true, false, keys));
+        }, () -> camera.getPos().y -= camera.getSpeed(), "move up", true, false, keys));
         registerAction(new Action(new int[][]{
             {GLFW_KEY_DOWN, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_S},
-        }, () -> camera.getPos().y -= 0.05f, "move down", true, false, keys));
+        }, () -> camera.getPos().y += camera.getSpeed(), "move down", true, false, keys));
         registerAction(new Action(new int[][]{
             {GLFW_KEY_LEFT, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_A},
-        }, () -> camera.getPos().x -= 0.05f, "move left", true, false, keys));
+        }, () -> camera.getPos().x += camera.getSpeed(), "move left", true, false, keys));
         registerAction(new Action(new int[][]{
             {GLFW_KEY_RIGHT, GLFW_KEY_LEFT_CONTROL},
             {GLFW_KEY_D},
-        }, () -> camera.getPos().x += 0.05f, "move right", true, false, keys));
+        }, () -> camera.getPos().x -= camera.getSpeed(), "move right", true, false, keys));
+
+        registerAction(new Action(new int[][]{
+            {GLFW_KEY_KP_ADD}
+        }, () -> camera.addScale(+0.3f), "scale up", true, false, keys));
+        registerAction(new Action(new int[][]{
+            {GLFW_KEY_KP_SUBTRACT}
+        }, () -> camera.addScale(-0.3f), "scale down", true, false, keys));
         registerUsedKeys();
     }
     private void registerUsedKeys() {
