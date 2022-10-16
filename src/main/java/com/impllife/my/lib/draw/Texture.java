@@ -7,8 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,7 +14,7 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 public class Texture implements Disposable {
-    private int texId;
+    private int textureId;
     Texture() {}
 
     void load(String filename) {
@@ -34,26 +32,25 @@ public class Texture implements Disposable {
             }
             pixels.flip();
 
-            texId = glGenTextures();
-
-            glBindTexture(GL_TEXTURE_2D, texId);
+            textureId = glGenTextures();
+            glBindTexture(GL_TEXTURE_2D, textureId);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Can't load a texture with name => " + filename);
         }
     }
 
     public void bind(int sampler) {
         if (sampler >= 0 && sampler <= 31) {
             glActiveTexture(GL_TEXTURE0 + sampler);
-            glBindTexture(GL_TEXTURE_2D, texId);
+            glBindTexture(GL_TEXTURE_2D, textureId);
         }
     }
 
     @Override
     public void dispose() {
-        glDeleteTextures(texId);
+        glDeleteTextures(textureId);
     }
 }
