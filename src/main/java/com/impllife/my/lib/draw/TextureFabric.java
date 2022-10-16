@@ -11,7 +11,7 @@ public class TextureFabric {
 
     public Texture get(String name) {
         Texture texture = new Texture();
-        texture.load(name);
+        texture.load("resources/textures/" + name);
         return texture;
     }
 }

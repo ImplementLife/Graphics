@@ -169,7 +169,7 @@
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
-                <directory>textures</directory>
+                <directory>src/resources/textures</directory>
             </resource>
         </resources>
         <plugins>

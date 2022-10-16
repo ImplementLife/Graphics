@@ -45,11 +45,11 @@ public class Texture implements Disposable {
         }
     }
 
-    public void bind(/*int sampler*/) {
-//        if (sampler >= 0 && sampler <= 31) {
-//            glActiveTexture(GL_TEXTURE0 + sampler);
+    public void bind(int sampler) {
+        if (sampler >= 0 && sampler <= 31) {
+            glActiveTexture(GL_TEXTURE0 + sampler);
             glBindTexture(GL_TEXTURE_2D, texId);
-//        }
+        }
     }
 
     @Override

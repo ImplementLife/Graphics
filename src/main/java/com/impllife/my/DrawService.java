@@ -1,8 +1,7 @@
 package com.impllife.my;
 
 import com.impllife.my.control.ControlService;
-import com.impllife.my.lib.draw.Texture;
-import com.impllife.my.lib.draw.TextureFabric;
+import com.impllife.my.lib.draw.*;
 import com.impllife.my.lib.math.V2d;
 import com.impllife.my.mouse.Mouse;
 import com.impllife.my.mouse.MouseFabric;
@@ -19,9 +18,13 @@ import static org.lwjgl.opengl.GL11.*;
 public class DrawService {
     @Autowired
     private ControlService controlService;
+    @Autowired
+    private DrawFabric drawFabric;
+
     public Window window;
     public Mouse mouse;
     public Vector2f pos = new Vector2f();
+    public Vector2f mousePos = new Vector2f();
 
     public void start() {
         if (!glfwInit()) {
@@ -29,31 +32,22 @@ public class DrawService {
         }
         window = new Window();
         glEnable(GL_TEXTURE_2D);
-
-        TextureFabric textureFabric = new TextureFabric();
-        Texture texture = textureFabric.get("C:\\Users\\ImplementLife\\Desktop\\temp\\save matvey desktop\\Projects\\1F EDU\\LWJGL edu\\textures\\00.png");
+        Model model = drawFabric.createModel();
+        Shader shader = drawFabric.getShader();
+        Texture texture = drawFabric.getTexture("01.png");
 
         mouse = MouseFabric.getInstance().getMouse(window.getId());
         while (!glfwWindowShouldClose(window.getId())) {
             controlService.checkKey();
+            updateMousePos();
             glfwPollEvents();
 
-//            updateMousePos();
             glClear(GL_COLOR_BUFFER_BIT);
-            texture.bind();
-            glBegin(GL_QUADS);
-                glTexCoord2f(0,0);
-                glVertex2f(-0.5f + pos.x, 0.5f + pos.y);
 
-                glTexCoord2f(1,0);
-                glVertex2f(0.5f + pos.x, 0.5f + pos.y);
-
-                glTexCoord2f(1,1);
-                glVertex2f(0.5f + pos.x, -0.5f + pos.y);
-
-                glTexCoord2f(0,1);
-                glVertex2f(-0.5f + pos.x, -0.5f + pos.y);
-            glEnd();
+            shader.bind();
+            shader.setUniform("sampler", 0);
+            texture.bind(0);
+            model.render();
 
             glfwSwapBuffers(window.getId());
         }
@@ -62,8 +56,7 @@ public class DrawService {
     }
 
     private void updateMousePos() {
-        V2d pos = mouse.getPos();
-        System.err.println("x=" + pos.x + " y=" + pos.y);
+        mousePos.set(mouse.getPos());
         glfwPollEvents();
     }
 }

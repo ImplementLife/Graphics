@@ -16,7 +16,7 @@ public class Model implements Disposable {
 	private int textureCoordObject;
 	private int indexObject;
 	
-	public Model(float[] vertices, float[] tex_coords, int[] indices) {
+	Model(float[] vertices, float[] tex_coords, int[] indices) {
 		drawCount = indices.length;
 		
 		vertexObject = glGenBuffers();
@@ -58,7 +58,6 @@ public class Model implements Disposable {
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-		
 	}
 	
 	private FloatBuffer createBuffer(float[] data) {

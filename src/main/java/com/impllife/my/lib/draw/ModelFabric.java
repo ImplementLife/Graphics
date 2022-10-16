@@ -10,17 +10,15 @@ public class ModelFabric {
     private DisposeManager disposeManager;
 
     private final float[] vertices = new float[] {
-        -1f, 1f, 0, //TOP LEFT     0
-        1f, 1f, 0,  //TOP RIGHT    1
-        1f, -1f, 0, //BOTTOM RIGHT 2
-        -1f, -1f, 0,//BOTTOM LEFT  3
+        -0.5f, 0.5f, 0, //TOP LEFT     0
+        0.5f, 0.5f, 0,  //TOP RIGHT    1
+        0.5f, -0.5f, 0, //BOTTOM RIGHT 2
+        -0.5f, -0.5f, 0,//BOTTOM LEFT  3
     };
 
     private final float[] texture = new float[] {
-        0,0,
-        1,0,
-        1,1,
-        0,1,
+        0,0,   1,0,
+        1,1,   0,1,
     };
 
     private final int[] indices = new int[] {

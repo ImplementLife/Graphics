@@ -1,4 +1,4 @@
 /target
 /.idea
-/src/com/impllife/tutorial
-/textures
+/src/main/java/com/impllife/tutorial
+/src/resources/textures
