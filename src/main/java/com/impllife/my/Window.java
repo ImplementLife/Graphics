@@ -1,8 +1,10 @@
 package com.impllife.my;
 
+import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.system.MemoryStack;
+import org.springframework.stereotype.Component;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -11,21 +13,27 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
+@Component
 public class Window {
-    private long windowId;
-    public Window() {
-        createWindow();
-    }
+    private long windowId = -1;
+    private final Vector2i size = new Vector2i();
 
     public long getId() {
         return windowId;
     }
-
-    private void createWindow() {
+    public Vector2i getSize() {
+        return size;
+    }
+    public void createWindow() {
+        createWindow(new Vector2i(600, 300));
+    }
+    public void createWindow(Vector2i size) {
+        if (windowId != -1) return;
+        this.size.set(size);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 //        windowId = glfwCreateWindow(1920, 1080, "MyStrategy", glfwGetPrimaryMonitor(), NULL);
-        windowId = glfwCreateWindow(600, 300, "MyStrategy", 0, 0);
+        windowId = glfwCreateWindow(size.x, size.y, "MyStrategy", 0, 0);
         if (windowId == 0) {
             throw new IllegalStateException("Failed to create Window");
         }

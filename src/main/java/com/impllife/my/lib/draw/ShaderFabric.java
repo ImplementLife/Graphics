@@ -10,7 +10,7 @@ public class ShaderFabric {
     private DisposeManager disposeManager;
 
     public Shader getShader() {
-        Shader shader = new Shader("shader");
+        Shader shader = new Shader("shader_02");
         disposeManager.put(shader);
         return shader;
     }

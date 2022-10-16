@@ -11,7 +11,7 @@ public class Action {
     private final Runnable exe;
     private final HashMap<Integer, Key> keys;
 
-    public Action(int[][] keysId, Runnable exe, String name, boolean onHold, boolean onPress, HashMap<Integer, Key> keys) {
+    Action(int[][] keysId, Runnable exe, String name, boolean onHold, boolean onPress, HashMap<Integer, Key> keys) {
         this.keysId = Objects.requireNonNull(keysId);
         this.exe = Objects.requireNonNull(exe);
         this.onHold = onHold;
